@@ -1,0 +1,378 @@
+/* Dark chat look, based on the reference photo: a top bar with an avatar,
+   grey bubbles on the left, a centred time label, and one message bar at the bottom.
+   Only the send button and the avatars are kept as controls. */
+:root {
+  --bg: #0b0d12;
+  --panel: #14171e;
+  --bubble: #262a33;
+  --bubble-hover: #2e333d;
+  --ink: #f2f3f5;
+  --ink-soft: #9aa0ab;
+  --accent: #3b82f6;
+  --accent-dark: #2563eb;
+  --line: #22262f;
+  --avatar: #22a55b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+/* The chat screen. Full height on phones, a tidy panel on bigger screens. */
+.chat-app {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 900px;
+  height: 100vh;
+  margin: 0 auto;
+  background: var(--bg);
+}
+
+@media (min-width: 720px) {
+  body {
+    padding: 24px 0;
+  }
+
+  .chat-app {
+    height: calc(100vh - 48px);
+    max-height: 860px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+}
+
+/* Top bar: back arrow, avatar, name and status. */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.topbar .sub {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+.topbar a.back {
+  color: var(--ink);
+  font-size: 26px;
+  line-height: 1;
+  padding: 0 6px 0 0;
+  text-decoration: none;
+}
+
+/* Circle with initials, used as the avatar. */
+.avatar {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--avatar);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.avatar.small {
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+}
+
+/* The scrolling conversation. */
+.thread {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 16px 18px;
+  background: var(--bg);
+}
+
+.thread-intro {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 12px;
+  margin: 6px 0 22px;
+}
+
+/* One message: avatar on the left, name above the grey bubble. */
+.row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.row-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 75%;
+}
+
+.who {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin: 0 0 4px 4px;
+}
+
+.bubble {
+  display: block;
+  padding: 10px 15px;
+  background: var(--bubble);
+  color: var(--ink);
+  border-radius: 20px;
+  border-bottom-left-radius: 6px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+a.bubble:hover {
+  background: var(--bubble-hover);
+}
+
+/* Messages you sent: on the right, blue bubble, no avatar or name. */
+.row.mine {
+  justify-content: flex-end;
+}
+
+.row.mine .row-body {
+  align-items: flex-end;
+}
+
+.row.mine .bubble {
+  background: var(--accent);
+  color: #fff;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 6px;
+}
+
+.row.mine a.bubble:hover {
+  background: var(--accent-dark);
+}
+
+.empty {
+  text-align: center;
+  color: var(--ink-soft);
+  padding: 40px 16px;
+}
+
+/* Bottom message bar: a rounded box with the text and a Send button. */
+.composer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.composer .fields {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.composer textarea {
+  display: block;
+  width: 100%;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 10px 16px;
+  min-height: 44px;
+  max-height: 120px;
+  resize: vertical;
+  transition: border-color 0.2s ease;
+}
+
+.composer textarea::placeholder {
+  color: var(--ink-soft);
+}
+
+.composer textarea:focus {
+  outline: none;
+  border-color: #3a404c;
+}
+
+.composer button {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  background: none;
+  border: 0;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.12s ease;
+}
+
+.composer button:hover {
+  color: #7fb4ff;
+}
+
+.composer button:active {
+  transform: scale(0.95);
+}
+
+/* Message box on the home page: looks like an input, opens the form. */
+.button-link {
+  flex: 1 1 auto;
+  display: block;
+  font-size: 15px;
+  color: var(--ink-soft);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 10px 16px;
+  text-decoration: none;
+}
+
+/* Send arrow icon (SVG) on the home page. */
+.send-link {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  padding: 8px;
+  border-radius: 50%;
+  transition: color 0.2s ease, transform 0.12s ease;
+}
+
+.send-link:hover {
+  color: #7fb4ff;
+}
+
+.send-link:active {
+  transform: scale(0.95);
+}
+
+/* Name field on the new message page. */
+.compose-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.saved-name {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.saved-name strong {
+  color: var(--ink);
+}
+
+.saved-name a {
+  display: inline-block;
+  margin-left: 4px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.saved-name a:hover {
+  color: #7fb4ff;
+}
+
+.name-hint {
+  margin: 10px 0 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+.thread-intro strong {
+  color: var(--ink);
+}
+
+.compose-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 16px 18px;
+}
+
+.compose-body label {
+  display: block;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.compose-body input {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 10px 16px;
+  transition: border-color 0.2s ease;
+}
+
+.compose-body input:focus {
+  outline: none;
+  border-color: #3a404c;
+}
+
+/* Error card on the error page. */
+.error-card {
+  margin: 24px auto;
+  max-width: 420px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+}
+
+.error-card h1 {
+  font-size: 18px;
+}
+
+a {
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}

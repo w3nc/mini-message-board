@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="chat-app">
+    <header class="topbar">
+      <a class="back" href="/" aria-label="Back to the board">&#8249;</a>
+      <span class="avatar small"><%= currentUser ? currentUser.charAt(0).toUpperCase() : "+" %></span>
+      <div>
+        <h1>New message</h1>
+        <p class="sub"><%= currentUser ? "Sending as " + currentUser : "Pick your name first" %></p>
+      </div>
+    </header>
+
+    <form method="POST" action="/new" class="compose-form">
+      <div class="compose-body">
+        <% if (currentUser) { %>
+          <p class="saved-name">
+            Your name is saved as <strong><%= currentUser %></strong>, so you can send
+            messages any time.
+            <a href="/new/reset-name">Change name</a>
+          </p>
+        <% } else { %>
+          <label>
+            Your name
+            <input type="text" name="messageUser" required maxlength="40" autofocus
+                   placeholder="Set your name once...">
+          </label>
+          <p class="name-hint">You only set this once. It will be remembered next time.</p>
+        <% } %>
+      </div>
+      <nav class="composer">
+        <div class="fields">
+          <textarea name="messageText" placeholder="Message..." required></textarea>
+        </div>
+        <button type="submit" aria-label="Send" title="Send">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </nav>
+    </form>
+  </div>
+</body>
+</html>

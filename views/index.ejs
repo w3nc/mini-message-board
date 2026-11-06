@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="chat-app">
+    <header class="topbar">
+      <span class="avatar"><%= title.charAt(0).toUpperCase() %></span>
+      <div>
+        <h1><%= title %></h1>
+        <p class="sub">Notes left on the board</p>
+      </div>
+    </header>
+
+    <main class="thread">
+      <p class="thread-intro">
+        <% if (currentUser) { %>
+          Sending as <strong><%= currentUser %></strong>.
+        <% } else { %>
+          Read what others left behind, or write your own.
+        <% } %>
+      </p>
+
+      <% if (messages.length === 0) { %>
+        <p class="empty">The board is empty. Be the first to send a message.</p>
+      <% } %>
+
+      <% messages.forEach(function (message) { %>
+        <% const mine = message.user === currentUser; %>
+        <div class="row<%= mine ? ' mine' : '' %>">
+          <% if (!mine) { %>
+            <span class="avatar small"><%= message.user.charAt(0).toUpperCase() %></span>
+          <% } %>
+          <div class="row-body">
+            <% if (!mine) { %>
+              <p class="who"><%= message.user %></p>
+            <% } %>
+            <a class="bubble" href="/messages/<%= message.id %>" title="<%= message.added.toLocaleString() %>"><%= message.text %></a>
+          </div>
+        </div>
+      <% }); %>
+    </main>
+
+    <nav class="composer">
+      <a class="button-link" href="/new">Message...</a>
+      <a class="send-link" href="/new" aria-label="Send" title="Send">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </a>
+    </nav>
+  </div>
+</body>
+</html>

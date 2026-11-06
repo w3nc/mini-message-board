@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="chat-app">
+    <header class="topbar">
+      <a class="back" href="/" aria-label="Back to the board">&#8249;</a>
+      <span class="avatar small"><%= message.user.charAt(0).toUpperCase() %></span>
+      <div>
+        <h1><%= message.user %></h1>
+        <p class="sub">Message details</p>
+      </div>
+    </header>
+
+    <main class="thread">
+      <span class="when"><%= message.added.toLocaleString() %></span>
+      <div class="row">
+        <span class="avatar small"><%= message.user.charAt(0).toUpperCase() %></span>
+        <div class="row-body">
+          <p class="who"><%= message.user %></p>
+          <div class="bubble"><%= message.text %></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
