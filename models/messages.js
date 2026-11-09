@@ -11,6 +11,7 @@ async function getAllMessages() {
   return result.rows;
 }
 
+// Only the messages written by one person.
 async function getMessagesByUser(userName) {
   const result = await pool.query(
     "SELECT id, user_name AS user, text, added FROM messages WHERE user_name = $1 ORDER BY added ASC, id ASC",

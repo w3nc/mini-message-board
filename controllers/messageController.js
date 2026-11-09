@@ -4,10 +4,12 @@ const {
   getMessageById,
   addMessage
 } = require("../models/messages");
+const { validateMessage } = require("../validators/messageValidator");
 
 // One year, so the saved username lasts a long time.
 const NAME_COOKIE_AGE = 365 * 24 * 60 * 60 * 1000;
 
+// Home page: list every message.
 async function getHome(req, res) {
   const messages = await getAllMessages();
   res.render("index", {
@@ -17,6 +19,7 @@ async function getHome(req, res) {
   });
 }
 
+// One message's details page.
 async function getMessage(req, res) {
   const message = await getMessageById(Number(req.params.id));
   if (!message) {
@@ -29,23 +32,41 @@ async function getMessage(req, res) {
   });
 }
 
+// Show the form for writing a new message.
 // The name field only appears the first time, before a name is saved.
 function getNewForm(req, res) {
   res.render("form", {
     title: "New Message",
-    currentUser: res.locals.user
+    currentUser: res.locals.user,
+    error: null,
+    text: ""
   });
 }
 
+// Save the new message, then go back to the home page.
 async function postNewMessage(req, res) {
   const savedName = res.locals.user;
-  const typedName = (req.body.messageUser || "").trim();
-  const userName = savedName || typedName;
-  const text = (req.body.messageText || "").trim();
+  const check = validateMessage(req.body);
 
   // A name and some text are both needed.
-  if (!userName || !text) {
-    return res.redirect("/new");
+  if (!check.ok) {
+    return res.status(400).render("form", {
+      title: "New Message",
+      currentUser: savedName,
+      error: check.error,
+      text: (req.body.messageText || "").slice(0, 500)
+    });
+  }
+
+  const userName = savedName || check.userName;
+
+  if (!userName) {
+    return res.status(400).render("form", {
+      title: "New Message",
+      currentUser: null,
+      error: "Put your name in first.",
+      text: check.text
+    });
   }
 
   // Set the name once, then remember it in the browser from now on.
@@ -57,7 +78,7 @@ async function postNewMessage(req, res) {
     });
   }
 
-  await addMessage(userName, text);
+  await addMessage(userName, check.text);
   res.redirect("/");
 }
 

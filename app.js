@@ -3,9 +3,9 @@ const express = require("express");
 const indexRouter = require("./routes/indexRouter");
 const newMessageRouter = require("./routes/newMessageRouter");
 const userRouter = require("./routes/userRouter");
-const currentUser = require("./controllers/currentUser");
-const notFound = require("./controllers/notFound");
-const errorHandler = require("./controllers/errorHandler");
+const currentUser = require("./middleware/currentUser");
+const notFound = require("./middleware/notFound");
+const errorHandler = require("./middleware/errorHandler");
 const { setupDatabase } = require("./db");
 
 const app = express();
@@ -31,12 +31,12 @@ app.use(errorHandler);
 // Make the message table ready first, then start listening.
 setupDatabase()
   .then(() => {
-    console.log("Database ready.");
+    app.listen(PORT, () => {
+      console.log(`Mini Message Board running on http://localhost:${PORT}`);
+    });
   })
   .catch((err) => {
-    console.warn("Database setup skipped:", err.message);
+    console.error("Could not reach the database:", err.message);
+    console.error("Fill in DATABASE_URL in the mini-message-board/.env file.");
+    process.exit(1);
   });
-
-app.listen(PORT, () => {
-  console.log(`Mini Message Board running on http://localhost:${PORT}`);
-});

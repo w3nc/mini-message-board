@@ -315,6 +315,16 @@ a.bubble:hover {
   font-size: 12px;
 }
 
+.form-error {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 92, 92, 0.12);
+  color: #ff8f8f;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
 .thread-intro strong {
   color: var(--ink);
 }

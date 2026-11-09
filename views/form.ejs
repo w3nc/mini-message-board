@@ -19,6 +19,9 @@
 
     <form method="POST" action="/new" class="compose-form">
       <div class="compose-body">
+        <% if (error) { %>
+          <p class="form-error"><%= error %></p>
+        <% } %>
         <% if (currentUser) { %>
           <p class="saved-name">
             Your name is saved as <strong><%= currentUser %></strong>, so you can send
@@ -36,7 +39,8 @@
       </div>
       <nav class="composer">
         <div class="fields">
-          <textarea name="messageText" placeholder="Message..." required></textarea>
+          <textarea name="messageText" placeholder="Message..." maxlength="500"
+                    required><%= text %></textarea>
         </div>
         <button type="submit" aria-label="Send" title="Send">
           <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg>

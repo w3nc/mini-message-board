@@ -7,7 +7,9 @@
     "node": ">=18"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "node --watch app.js",
+    "populate": "node db/populatedb.js"
   },
   "dependencies": {
     "dotenv": "^18.0.9",
